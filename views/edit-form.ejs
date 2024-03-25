@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Language Proficiency</title>
+</head>
+<body>
+  <h1>Edit Language Proficiency</h1>
+  <form id="languageForm">
+    <h3>Languages Known:</h3>
+    <% for (let i = 0; i < languages.length; i++) { %>
+        <input type="hidden" name="user" id="user" value="<%= languages[i].id %>">
+        <input type="checkbox" id="<%= languages[i].language.toLowerCase() %>" name="languages[]" value="<%= languages[i].language %>" checked>
+        <label for="<%= languages[i].language.toLowerCase() %>"><%= languages[i].language %></label><br>
+        <div id="<%= languages[i].language.toLowerCase() %>Options">
+            <p>Read</p>
+            <input type="checkbox" id="read_<%= languages[i].language.toLowerCase() %>" name="read_<%= languages[i].language.toLowerCase() %>" value="Read" <% if (languages[i].read) { %> checked <% } %>>
+            <label for="read_<%= languages[i].language.toLowerCase() %>">Read</label><br>
+            <input type="checkbox" id="write_<%= languages[i].language.toLowerCase() %>" name="write_<%= languages[i].language.toLowerCase() %>" value="Write" <% if (languages[i].write) { %> checked <% } %>>
+            <label for="write_<%= languages[i].language.toLowerCase() %>">Write</label><br>
+            <input type="checkbox" id="speak_<%= languages[i].language.toLowerCase() %>" name="speak_<%= languages[i].language.toLowerCase() %>" value="Speak" <% if (languages[i].speak) { %> checked <% } %>>
+            <label for="speak_<%= languages[i].language.toLowerCase() %>">Speak</label><br>
+        </div>
+    <% } %>
+    <input type="submit" value="Update">
+  </form>
+</body>
+<script>
+document.getElementById('languageForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+  let user= document.getElementById("user").value;
+    // Retrieve form data
+    const formData = new FormData(this);
+
+    // Send form data via fetch
+    fetch(`/update-form/?user=${user}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams(formData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text(); // Return response as text
+    })
+    .then(data => {
+        console.log(data); // Log the response data
+        // Optionally, do something with the response data (e.g., show a success message)
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+        // Optionally, handle errors (e.g., show an error message to the user)
+    });
+});
+
+
+</script>
+</html>

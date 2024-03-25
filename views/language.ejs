@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Language Proficiency Form</title>
+</head>
+<body>
+  <h1>Language Proficiency Form</h1>
+  <form id="languageForm">
+    <h3>Languages Known:</h3>
+    <input type="checkbox" id="hindi" name="languages[]" value="Hindi">
+    <label for="hindi">Hindi</label><br>
+    <div id="hindiOptions" >
+        <p>Read</p>
+        <input type="checkbox" id="read_hindi" name="read_hindi" value="Read">
+        <label for="read_hindi">Read</label><br>
+        <input type="checkbox" id="write_hindi" name="write_hindi" value="Write">
+        <label for="write_hindi">Write</label><br>
+        <input type="checkbox" id="speak_hindi" name="speak_hindi" value="Speak">
+        <label for="speak_hindi">Speak</label><br>
+    </div>
+    <input type="checkbox" id="gujarati" name="languages[]" value="Gujarati">
+    <label for="gujarati">Gujarati</label><br>
+    <div id="gujaratiOptions" >
+        <p>Read</p>
+        <input type="checkbox" id="read_gujarati" name="read_gujarati" value="Read">
+        <label for="read_gujarati">Read</label><br>
+        <input type="checkbox" id="write_gujarati" name="write_gujarati" value="Write">
+        <label for="write_gujarati">Write</label><br>
+        <input type="checkbox" id="speak_gujarati" name="speak_gujarati" value="Speak">
+        <label for="speak_gujarati">Speak</label><br>
+    </div>
+    <input type="submit" value="Submit">
+</form>
+
+<script>
+    document.getElementById('languageForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const formData = new FormData(this); // Create FormData object from the form
+
+  
+    // Send form data via fetch
+    fetch('/submit-form', {
+        method: 'POST',
+        headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams(formData)
+        
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text(); // Return response as text
+    })
+    .then(data => {
+        console.log(data); // Log the response data
+        // Optionally, do something with the response data (e.g., show a success message)
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+        // Optionally, handle errors (e.g., show an error message to the user)
+    });
+});
+</script>
+</body>
+</html>
